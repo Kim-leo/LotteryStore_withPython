@@ -6,7 +6,7 @@ import pandas as pd
 # 카카오맵 API를 이용하여 주소를 위도 경도로 출력하는 함수
 # 주소입력 -> [위도, 경도] 배열형태로 출력
 def getLatLng(addr):
-    api_key = "c1291537d6477a23673e8a1b0f4702ff"
+    api_key = "Your API KEY"
     url = 'https://dapi.kakao.com/v2/local/search/address.json?query=' + addr
     headers = {"Authorization": "KakaoAK {}".format(api_key)}
     result = json.loads(str(requests.get(url, headers=headers).text))
