@@ -21,13 +21,13 @@
 ### 개발 계획
 - [x] 5.21 – 프로젝트 계획서 작성 -> done
 - [x] 5.23 ~ 5.25 – 복권판매점주소 csv 파일을 Folium map에 출력하는 기능 구현
-- [ ] 5.26 ~ 5.28 – BeautifulSoup를 이용하여 웹 크롤링 후, 복권정보 출력 기능 구현
-- [ ] 5.29 – 랜덤정수 7개 출력하는 함수 제작.
+- [x] 5.26 ~ 5.28 – BeautifulSoup를 이용하여 웹 크롤링 후, 복권정보 출력 기능 구현
+- [x] 5.29 – 랜덤정수 7개 출력하는 함수 제작.
 - [ ] 5.30 ~ 5.31 – 페이지 레이아웃 제작 및 코드 리팩토링 
   
 ### 계획 변경 내용
 - 5.25 전국단위에서 서울시 노원구로 한정: pandas 데이터 추출과정 진행
-  
+- 5.26 복권사이트에서 웹 크롤링하여 복권정보 추출해오기, 복권번호 7자리 추천해주는 함수 
   
   
 ![Footer](https://capsule-render.vercel.app/api?type=Waving&color=gradient&height=150&section=footer&animation=fadeIn) 
