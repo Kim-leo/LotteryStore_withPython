@@ -3,6 +3,7 @@ import requests
 from urllib.parse import urlparse
 import pandas as pd
 import folium
+from bs4 import BeautifulSoup
 
 '''
 csv파일의 모든 주소를 가져와서 이를 좌표로 변환하고
@@ -15,6 +16,9 @@ map에 핀을 찍어보도록 하겠습니다.
     2.3 [위도, 경도]의 배열에서 각각 latitude, longitude 배열에 저장하기
 3. 맵 생성하기
     3.1 맵 위에 좌표를 핀으로 모두 출력하기
+4. 동행복권 사이트에서 당첨번호 7개와 몇회차인지 정보 크롤링하기
+    4.1 당첨번호 7개를 배열에 저장
+    4.2 N회차 + 날짜를 str으로 저장
 '''
 
 # 1. 카카오맵 API 가져오기
@@ -58,3 +62,27 @@ m = folium.Map(location = [lat[0], lon[0]],
 # 3.1 맵 위에 좌표를 핀으로 모두 출력하기
 for i in range(46):
     folium.Marker( [lat[i], lon[i]]).add_to(m)
+
+    
+    
+# 4. 동행복권 사이트에서 당첨번호 7개와 몇회차인지 정보 크롤링하기
+def crawlURL():
+    url = 'https://dhlottery.co.kr/common.do?method=main'
+    response = requests.get(url)
+    html = response.text
+    soup = BeautifulSoup(html, 'html.parser')
+
+    # 4.1 당첨번호 7개를 배열에 저장
+    numBox = []
+    for i in range(1, 7):
+        nums = soup.find('span', {'id': 'drwtNo{}'.format(i)})
+        numBox.append(nums.text)
+    bonus = soup.find('span', {'id': 'bnusNo'})
+    numBox.append(bonus.text)
+
+    # 4.2 N회차 + 날짜를 str으로 저장
+    date = soup.find('a', {'id': 'goByWin1'})
+    date = date.text
+    
+    print(numBox)
+    print(date)
