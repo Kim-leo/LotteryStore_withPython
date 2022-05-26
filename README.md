@@ -27,7 +27,8 @@
   
 ### 계획 변경 내용
 - 5.25 전국단위에서 서울시 노원구로 한정: pandas 데이터 추출과정 진행
-- 5.26 복권사이트에서 웹 크롤링하여 복권정보 추출해오기, 복권번호 7자리 추천해주는 함수 
+- 5.26 복권사이트에서 웹 크롤링하여 복권정보 추출해오기, 복권번호 7자리 추천해주는 함수 제작
+  <br> 웹 크롤링 시, 네이버 복권당첨페이지가 아니라 동행복권사이트에서 직접 번호 7자리 및 정보 추출 성공
   
   
 ![Footer](https://capsule-render.vercel.app/api?type=Waving&color=gradient&height=150&section=footer&animation=fadeIn) 
