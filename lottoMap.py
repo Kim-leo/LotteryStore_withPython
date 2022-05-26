@@ -4,6 +4,7 @@ from urllib.parse import urlparse
 import pandas as pd
 import folium
 from bs4 import BeautifulSoup
+import random
 
 '''
 csv파일의 모든 주소를 가져와서 이를 좌표로 변환하고
@@ -19,6 +20,7 @@ map에 핀을 찍어보도록 하겠습니다.
 4. 동행복권 사이트에서 당첨번호 7개와 몇회차인지 정보 크롤링하기
     4.1 당첨번호 7개를 배열에 저장
     4.2 N회차 + 날짜를 str으로 저장
+5. 랜덤번호 7개 생성 (1에서 45사이의 자연수)
 '''
 
 # 1. 카카오맵 API 가져오기
@@ -86,3 +88,13 @@ def crawlURL():
     
     print(numBox)
     print(date)
+
+    
+# 5. 랜덤번호 7개 생성 (1에서 45사이의 자연수)
+def randomNumbers():
+    randomNumsList = random.sample(range(1,46), 7)
+    bonusNum = random.choice(randomNumsList)
+    randomNumsList.remove(bonusNum)
+    randomNumsList.sort()
+    
+    print(randomNumsList, bonusNum)
