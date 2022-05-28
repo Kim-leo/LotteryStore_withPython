@@ -87,11 +87,13 @@ def crawlURL():
         winNums = soup.find('span', {'id': 'drwtNo{}'.format(i)})
         winBox.append(winNums.text)
     winBoxWithoutBonus = set(map(int, winBox))
+    winBoxWithoutBonus = sorted(winBoxWithoutBonus)
     
     bonus = soup.find('span', {'id': 'bnusNo'})
     winBox.append(bonus.text)
     winBox = set(map(int, winBox)) #numBox를 int요소가 있는 set으로 저장. (추후 당첨확인을 위함.)
-
+    winBox = sorted(winBox)
+    
     # 4.2 N회차 + 날짜를 str으로 저장
     date = soup.find('a', {'id': 'goByWin1'})
     date = date.text
