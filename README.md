@@ -31,6 +31,7 @@
   <br> 웹 크롤링 시, 네이버 복권당첨페이지가 아니라 동행복권사이트에서 직접 번호 7자리 및 정보 추출 성공
 - 5.27 복권번호 추첨 시, 7자리가 아니라 6자리로 수정
 - 5.29 tkinter를 이용하여 GUI생성 후, 모든 기능을 담은 페이지 구현 예정
+- 5.31 맵 출력방법을 Folium에서 tkintermapview로 변경
   
   
 ![Footer](https://capsule-render.vercel.app/api?type=Waving&color=gradient&height=150&section=footer&animation=fadeIn) 
