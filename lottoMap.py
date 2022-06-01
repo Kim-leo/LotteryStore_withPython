@@ -31,7 +31,7 @@ import tkintermapview
 
 # 1. 카카오맵 API 가져오기
 def getLatLon(addr):
-    api_key = "c1291537d6477a23673e8a1b0f4702ff"
+    api_key = "Your API KEY"
     url = 'https://dapi.kakao.com/v2/local/search/address.json?query=' + addr
     headers = {"Authorization": "KakaoAK {}".format(api_key)}
     result = json.loads(str(requests.get(url, headers=headers).text))
