@@ -5,11 +5,12 @@ import pandas as pd
 import folium
 from bs4 import BeautifulSoup
 import random
+import tkinter as tk
+import tkinter.font as tkFont
+import tkintermapview
+
 
 '''
-csv파일의 모든 주소를 가져와서 이를 좌표로 변환하고
-map에 핀을 찍어보도록 하겠습니다.
-
 1. 카카오맵 API 가져오기
 2. csv파일 가져오기
     2.1 도로명주소만 따로 뽑아서 저장하기
@@ -22,6 +23,10 @@ map에 핀을 찍어보도록 하겠습니다.
     4.2 N회차 + 날짜를 str으로 저장
     4.3 당첨확인 함수 생성
 5. 랜덤번호 6개 생성 (1에서 45사이의 자연수)
+6. tkinter 페이지 구성
+    6.1 버튼1 - tkinter 맵에 핀 찍기
+    6.2 버튼2 - 
+    
 '''
 
 # 1. 카카오맵 API 가져오기
@@ -66,6 +71,7 @@ m = folium.Map(location = [lat[0], lon[0]],
 for i in range(46):
     folium.Marker( [lat[i], lon[i]]).add_to(m)
 
+ 
     
     
 # 4. 동행복권 사이트에서 당첨번호 7개와 몇회차인지 정보 크롤링하기
@@ -93,7 +99,7 @@ def crawlURL():
     winBox.append(bonus.text)
     winBox = set(map(int, winBox)) #numBox를 int요소가 있는 set으로 저장. (추후 당첨확인을 위함.)
     winBox = sorted(winBox)
-    
+
     # 4.2 N회차 + 날짜를 str으로 저장
     date = soup.find('a', {'id': 'goByWin1'})
     date = date.text
@@ -104,35 +110,8 @@ def crawlURL():
 crawlURL()
 
 # 4.3 당첨확인 함수 생성
-def checkMyLuck():
-    # 내 복권번호 6자리 입력하기
-    N = 6
-    myNumbers = []
-    for i in range(N):
-        myNumbers.append(int(input()))
-    
-    myNumbers.sort()
-    myNumbers = set(myNumbers) #numBox와 본인의 번호를 비교를 위해 set으로 바꿈
-    interNum = winBox & myNumbers
-    howManyLucky = len(interNum) #등수를 확인하기 위해 얼마나 겹쳤는지 int로 확인
-    
-    # 1등 ~ 꽝 출력
-    if len(winBox & myNumbers) == 6:
-        if len(winBoxWithoutBonus & myNumbers) == 6:
-            print("1등")
-        else:
-            print("2등")
-    elif len(winBox & myNumbers) == 5:
-        print("3등")
-    elif len(winBox & myNumbers) == 4:
-        print("4등")
-    elif len(winBox & myNumbers) == 3:
-        print("5등")
-    else:
-        print("꽝~")
-    
 
-checkMyLuck()    
+   
     
 # 5. 랜덤번호 6개 생성 (1에서 45사이의 자연수)
 def randomNumbers():
@@ -141,7 +120,7 @@ def randomNumbers():
     
     print(randomNumsList)
 
-# 6. tkinter map에 좌표 표시
+
 import tkinter as tk
 import tkinter.font as tkFont
 import tkintermapview
@@ -158,34 +137,149 @@ titleLabel = tk.Label(window, text = "Title label",
                       font = titleFont)
 titleLabel.place(x = 230, y = 10)
  
+# 지도 띄우기
 map_widget = tkintermapview.TkinterMapView(window, width = 330, height = 250, corner_radius = 0)
-#map_widget.set_position(48.860381, 2.338594)
-#map_widget.set_position(lat[0], lon[0])
+map_widget.set_position(lat[0], lon[0])
 map_widget.set_zoom(15)
-
-#marker1 = map_widget.set_marker(lat[0], lon[0])
-
 for i in range(46):
     markers = map_widget.set_marker(lat[i], lon[i])
 
+# 복권번호 확인 레이블
+winBox = list(winBox)
+winDateLabel = tk.Label(window, text = date, 
+                        fg = 'snow', bg = 'green', 
+                        width = 30, height = 2)
+
+winBoxLabel1 = tk.Label(window, text = winBox[0], 
+                       fg = 'snow', bg = 'green')
+winBoxLabel2 = tk.Label(window, text = winBox[1],
+                        fg = 'snow', bg = 'green')
+winBoxLabel3 = tk.Label(window, text = winBox[2],
+                        fg = 'snow', bg = 'green')
+winBoxLabel4 = tk.Label(window, text = winBox[3],
+                        fg = 'snow', bg = 'green')
+winBoxLabel5 = tk.Label(window, text = winBox[4],
+                        fg = 'snow', bg = 'green')
+winBoxLabel6 = tk.Label(window, text = winBox[5],
+                        fg = 'snow', bg = 'green')
+winBoxLabelPlus = tk.Label(window, text = "+",
+                        fg = 'snow', bg = 'green')
+winBoxLabelBonus = tk.Label(window, text = winBox[6],
+                        fg = 'snow', bg = 'green')
+
+# 당첨확인 레이블
+textBox1 = tk.Entry(window, width = 30, textvariable=int)
+resultLabel = tk.Label(window, text = "결과 표시 창", width  = 30,
+                       fg = 'snow', bg = 'green')
+infoLabel1 = tk.Label(window, text = "번호 입력 시, 다음과 같이 입력해주세요.", 
+                     width = 30, height = 2, fg = 'snow', bg = 'green')
+infoLabel2 = tk.Label(window, text = "1 2 3 4 5 6 7", 
+                     width = 30, height = 2, fg = 'green', bg = 'snow')
+
+myNumbers = []
+def checkNumbers():
+    
+    global myNumbers
+    global inputNumbers
+    global winBox
+    
+    myNumbers = []
+    
+    myNumbers.append(textBox1.get().split(" "))
+    inputNumbers = myNumbers[0]
+    
+    inputNumbers.sort()
+    
+    inputNumbers = set(map(int, inputNumbers)) #numBox와 본인의 번호를 비교를 위해 set으로 바꿈
+    winBox = set(winBox)
+    
+    interNum = winBox & inputNumbers
+    howManyLucky = len(interNum) #등수를 확인하기 위해 얼마나 겹쳤는지 int로 확인
+    
+    # 1등 ~ 꽝 출력
+    if len(winBox & inputNumbers) == 6:
+        if len(winBoxWithoutBonus & inputNumbers) == 6:
+            resultLabel.configure(text = "1등")
+        else:
+            resultLabel.configure(text = "2등")
+    elif len(winBox & inputNumbers) == 5:
+        resultLabel.configure(text = "3등")
+    elif len(winBox & inputNumbers) == 4:
+        resultLabel.configure(text = "4등")
+    elif len(winBox & inputNumbers) == 3:
+        resultLabel.configure(text = "5등")
+    else:
+        resultLabel.configure(text = "꽝~")
+    
+    
+    
+    
+
+
+checkBtn = tk.Button(window, width = 5, text = '클릭', command = checkNumbers)
+
+    
 def printMap():
+    winDateLabel.place_forget()
+    winBoxLabel1.place_forget()
+    winBoxLabel2.place_forget()
+    winBoxLabel3.place_forget()
+    winBoxLabel4.place_forget()
+    winBoxLabel5.place_forget()
+    winBoxLabel6.place_forget()
+    winBoxLabelPlus.place_forget()
+    winBoxLabelBonus.place_forget()
+    
+    
     map_widget.place(x = 250, y = 100)
 
-def btn2Action():
+def showWinNums():
     map_widget.place_forget()
-
+    infoLabel1.place_forget()
+    infoLabel2.place_forget()
+    textBox1.place_forget()
+    checkBtn.place_forget()
+    resultLabel.place_forget()
+    
+    winDateLabel.place(x = 250, y = 100)
+    winBoxLabel1.place(x = 250, y = 170)
+    winBoxLabel2.place(x = 280, y = 170)
+    winBoxLabel3.place(x = 310, y = 170)
+    winBoxLabel4.place(x = 340, y = 170)
+    winBoxLabel5.place(x = 370, y = 170)
+    winBoxLabel6.place(x = 400, y = 170)
+    winBoxLabelPlus.place(x = 430, y = 170)
+    winBoxLabelBonus.place(x = 480, y = 170)
+    
+def checkMyNumbers():
+    map_widget.place_forget()
+    winDateLabel.place_forget()
+    winBoxLabel1.place_forget()
+    winBoxLabel2.place_forget()
+    winBoxLabel3.place_forget()
+    winBoxLabel4.place_forget()
+    winBoxLabel5.place_forget()
+    winBoxLabel6.place_forget()
+    winBoxLabelPlus.place_forget()
+    winBoxLabelBonus.place_forget()
+    
+    infoLabel1.place(x = 250, y = 100)
+    infoLabel2.place(x = 250, y = 140)
+    textBox1.place(x = 250, y = 200)
+    checkBtn.place(x = 350, y = 250)
+    resultLabel.place(x = 250, y = 300)
  
 
-btn1 = tk.Button(window, text = '버튼1', width = 10, height = 2, command = printMap)
+btn1 = tk.Button(window, text = '노원구 복권판매점', width = 10, height = 2, command = printMap)
 btn1.place(x = 50, y = 100)
  
-btn2 = tk.Button(window, text = '버튼2', width = 10, height = 2, command = btn2Action)
+btn2 = tk.Button(window, text = '복권번호 확인', width = 10, height = 2, command = showWinNums)
 btn2.place(x = 50, y = 170)
  
-btn3 = tk.Button(window, text = '버튼3', width = 10, height = 2)
+btn3 = tk.Button(window, text = '당첨 조회', width = 10, height = 2, command = checkMyNumbers)
 btn3.place(x = 50, y = 240)
 
-btn4 = tk.Button(window, text = '버튼4', width = 10, height = 2)
+btn4 = tk.Button(window, text = '복권번호 추천', width = 10, height = 2)
 btn4.place(x = 50, y = 310)
 
-#window.mainloop()
+window.mainloop()
